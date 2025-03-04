@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="style.css">
+   
+</head>
+<body>
+    <div class="top-bar">
+        <button class="back-button" onclick="window.location.href='index.html'">← Volver</button>
+        <h1>NUTT PLACE</h1>
+        <h1></h1>
+    </div>
+    <bbutton class="cart-button" onclick="verCarrito()"><img src="carro.png"</button>
+    <div class="carrito-container">
+        <h2>Carrito</h2>
+        <div id="carrito" class="productos-lista"></div>
+        <p id="total" class="total"></p>
+        <div class="botones-container">
+            <button onclick="continuarCompra()">CONTINUAR COMPRA</button>
+            <button onclick="volverATienda()">SEGUIR COMPRANDO</button>
+        </div>
+    </div>
+    <script>
+        function cargarCarrito() {
+            const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+            const contenedor = document.getElementById("carrito");
+            const totalElemento = document.getElementById("total");
+            contenedor.innerHTML = "";
+            
+            if (carrito.length === 0) {
+                contenedor.innerHTML = "<p>El carrito está vacío</p>";
+                totalElemento.innerText = "";
+                return;
+            }
+            
+            let total = 0;
+            carrito.forEach((p, index) => {
+                total += p.precio;
+                const div = document.createElement("div");
+                div.classList.add("producto");
+                div.innerHTML = `
+                    <div class='imagen-placeholder'></div>
+                    <div class='producto-info'>
+                        <p><strong>${p.nombre}</strong></p>
+                        <p class='precio'>$${p.precio}</p>
+                    </div>
+                    <button onclick="eliminarDelCarrito(${index})">X</button>
+                `;
+                contenedor.appendChild(div);
+            });
+            totalElemento.innerText = `Total: $${total}`;
+        }
+
+        function eliminarDelCarrito(index) {
+            let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+            carrito.splice(index, 1);
+            localStorage.setItem("carrito", JSON.stringify(carrito));
+            cargarCarrito();
+        }
+
+        function volverATienda() {
+            window.location.href = "index.html";
+        }
+
+        function continuarCompra() {
+            window.location.href = "checkout.html";
+        }
+
+        cargarCarrito();
+    </script>
+</body>
+</html>

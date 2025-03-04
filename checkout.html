@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="top-bar">
+        <button class="back-button" onclick="window.location.href='index.html'">← Volver</button>
+        <h1>NUTT PLACE</h1>
+        <h1></h1>
+    </div>
+    <div class="checkout-container">
+        <h2>¡Agrega medio de pago!</h2>
+        <div class="opciones-pago">
+            <div class="opcion" onclick="seleccionarMetodo('credito')">Crédito</div>
+            <div class="opcion" onclick="seleccionarMetodo('debito')">Débito</div>
+            <div class="opcion" onclick="seleccionarMetodo('fisico')">Pago Físico</div>
+        </div>
+        <div id="detalles-credito" class="detalles">
+            <input type="text" placeholder="Número de tarjeta"><br>
+            <input type="text" placeholder="Nombre"><br>
+            <input type="text" placeholder="Clave (CVC)"><br>
+            <input type="text" placeholder="Fecha de vencimiento">
+        </div>
+        <div id="detalles-debito" class="detalles">
+            <input type="text" placeholder="Número de tarjeta"><br>
+            <input type="text" placeholder="Nombre"><br>
+            <input type="text" placeholder="Clave (CVC)"><br>
+            <input type="text" placeholder="Fecha de vencimiento">
+        </div>
+        <div id="detalles-fisico" class="detalles">
+            <div class="opcion" onclick="seleccionarOpcionFisico('efecti')">Efecti</div>
+            <div class="opcion" onclick="seleccionarOpcionFisico('bancario')">Corresponsal Bancario</div>
+            <div class="opcion" onclick="seleccionarOpcionFisico('vendedor')">Hablar con el vendedor</div>
+        </div>
+        <div class="botones-container">
+            <button onclick="volverAlCarrito()">VOLVER AL CARRITO</button>
+            <button onclick="window.location.href='rastreo.html'">CONTINUAR</button>
+        </div>
+    </div>
+    <script>
+        function volver() { window.history.back(); }
+        function irATienda() { window.location.href = "index.html"; }
+        function volverAlCarrito() { window.location.href = "carrito.html"; }
+        function continuar() { alert('Continuando con la compra...'); }
+        function seleccionarMetodo(metodo) {
+            document.querySelectorAll('.detalles').forEach(div => div.style.display = 'none');
+            document.querySelector(`#detalles-${metodo}`).style.display = 'block';
+            document.querySelectorAll('.opciones-pago .opcion').forEach(div => div.classList.remove('seleccionado'));
+            event.target.classList.add('seleccionado');
+        }
+        function seleccionarOpcionFisico(opcion) {
+            document.querySelectorAll('#detalles-fisico .opcion').forEach(div => div.classList.remove('seleccionado'));
+            const indice = ['efecti', 'bancario', 'vendedor'].indexOf(opcion);
+            document.querySelector(`#detalles-fisico .opcion:nth-child(${indice + 1})`).classList.add('seleccionado');
+        }
+    </script>
+</body>
+</html>

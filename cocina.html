@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutts Market</title>
+    <link rel="icon" href="Bellota.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="Bellota.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .imagen-placeholder {
+            width: 100%;
+            height: 150px; 
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .imagen-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+        
+        .producto-imagen-grande {
+            width: 100%;
+            height: 300px; 
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .producto-imagen-grande img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+        }
+
+        .categorias-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .categoria {
+            width: 140px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .categoria:hover {
+            transform: scale(1.05);
+        }
+
+        .categoria-imagen {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0 auto 10px;
+        }
+
+        .categoria-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .categoria-bar {
+            background-color: #e8e6de;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .banner-container {
+            width: 95%;
+            margin: 20px auto;
+            border-radius: 20px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+        }
+        .banner-principal {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px; 
+        }
+        
+        .banner-principal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-container {
+            width: 100%;
+            background-color: #e8e6de;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            border-top: 2px solid #ccc;
+        }
+
+        #modal-producto .modal-contenido {
+
+            background-color: #ffffff; 
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 320px;
+            margin: 5% auto; 
+        }
+
+        #modal-producto .producto-detalle {
+            text-align: center;
+        }
+
+        #modal-producto .producto-detalle h2 {
+            margin: 10px 0;
+            font-size: 20px;
+        }
+
+        #modal-producto .producto-detalle .producto-precio {
+            color: red;
+            font-size: 24px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        #modal-producto .producto-detalle .botones-compra {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        #modal-producto .producto-detalle .botones-compra button {
+            background-color: #b3e6b3;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #modal-producto .producto-detalle .descripcion,
+        #modal-producto .producto-detalle .reseñas {
+            text-align: left;
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        #modal-producto .producto-detalle .descripcion h3,
+        #modal-producto .producto-detalle .reseñas h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body onclick="closeMenu(event)">
+    <div class="yellow-background"></div>
+    <div class="top-bar-container"></div>
+    
+    <div class="top-bar">
+        <button class="menu-button" onclick="toggleMenu(event)">☰</button>
+        <h1 class="title">Nutts Market</h1>
+        <div class="top-buttons">
+            <button class="cart-button" onclick="verCarrito()"><img src="carro.png"></button>
+        </div>
+    </div>
+
+    <div class="menu-hamburguesa" id="menu">
+        <button onclick="window.location.href='login.html'">Iniciar Sesión</button>
+        <button onclick="window.location.href='index.html'">Inicio</button>
+        <button onclick="document.getElementById('search').focus()">Buscar</button>
+        <button onclick="mostrarModalCategorias()">Categorías</button>
+        <button onclick="window.location.href='carrito.html'">Mis Compras</button>
+        <button onclick="window.location.href='rastreo.html'">Rastreo de Pedido</button>
+        <button onclick="alert('Información presionada')">Info</button>
+        <button onclick="alert('Contacto presionado')">Contacto</button>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Buscar productos...">
+        <button onclick="buscarProducto()">🔍</button>
+    </div>
+
+    <div class="categoria-bar">
+        <button onclick="mostrarModalCategorias()">Categorías</button>
+        <button onclick="window.location.href='ofertas.html'">Ofertas</button>
+        <button onclick="window.location.href='vender.html'">Vender</button>
+        <button onclick="window.location.href='carrito.html'">Pedidos</button>
+    </div>
+
+    <div class="banner-container">
+        <div class="banner-principal">
+            <img src="6.png" alt="Banner Principal" onerror="this.onerror=null; this.src=''; this.alt='Banner no disponible'; this.parentNode.style.backgroundColor='#f5f5f5';">
+        </div>
+    </div>
+
+    <h2></h2>
+    <div id="productos" class="productos-container"></div>
+
+
+    <div id="modal-producto" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" onclick="cerrarModal()">&times;</span>
+            <div id="detalle-producto" class="producto-detalle"></div>
+        </div>
+    </div>
+
+
+    <div id="modal-categorias" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" onclick="cerrarModalCategorias()">&times;</span>
+            <h2>Categorías</h2>
+            <div id="categorias-listado" class="categorias-container"></div>
+        </div>
+    </div>
+
+    <script>
+        const productos = [
+            {
+                nombre: "Limpiador",
+                precio: 20000,
+                descripcion: "Un limpiador multiusos para tu hogar.",
+                categoria: "Hogar",
+                stock: 25,
+                imagen: "limpiador.jpg"
+            },
+            {  
+                nombre: "Cafe Puro",
+                precio: 3000,
+                descripcion: "Café 100% puro para iniciar tu día con energía.",
+                categoria: "Alimentos",
+                stock: 25,
+                imagen: "cafe.png"
+            },
+            {
+                nombre: "Celular",
+                precio: 120000,
+                descripcion: "Smartphone de última generación con gran capacidad.",
+                categoria: "Tecnología",
+                stock: 25,
+                imagen: "phone.jpg"
+            },
+            {
+                nombre: "Galletas",
+                precio: 1200,
+                descripcion: "Galletas crujientes para disfrutar en cualquier momento.",
+                categoria: "Alimentos",
+                stock: 25,
+                imagen: "galletas.jpg"
+            },
+            {
+                nombre: "Pan",
+                precio: 200,
+                descripcion: "Pan fresco recién horneado.",
+                categoria: "Alimentos",
+                stock: 25,
+                imagen: "pan.png"
+            },
+            {
+                nombre: "tv",
+                precio: 1500000,
+                descripcion: "Pantalla de alta definición para tu entretenimiento.",
+                categoria: "Tecnología",
+                stock: 25,
+                imagen: "tv.png"
+            }
+        ];
+        
+        const categorias = [
+            {
+                nombre: "Tecnologia",
+                imagen: "phone.jpg"
+            },
+            {
+                nombre: "Alimentos",
+                imagen: "zanahoria.png"
+            },
+            {
+                nombre: "Ropa",
+                imagen: "vestido.jpg"
+            },
+            {
+                nombre: "Hogar",
+                imagen: "sala.jpg"
+            },
+            {
+                nombre: "Ofertas",
+                imagen: "ofertas.jpg"
+            },
+            {
+                nombre: "Cocina",
+                imagen: "ollas.jpg"
+            }
+        ];
+        
+        let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+        function mostrarProductos() {
+            const contenedor = document.getElementById("productos");
+            contenedor.innerHTML = "";
+            productos.forEach((p, index) => {
+                const div = document.createElement("div");
+                div.classList.add("producto");
+                
+                let imagenHTML = `<div class='imagen-placeholder'>`;
+                if (p.imagen) {
+                    imagenHTML += `<img src="${p.imagen}" alt="${p.nombre}" onerror="this.style.display='none'; this.parentNode.innerHTML='${p.nombre}';"></div>`;
+                } else {
+                    imagenHTML += `${p.nombre}</div>`;
+                }
+                
+                div.innerHTML = `
+                    ${imagenHTML}
+                    <p><strong>${p.nombre}</strong></p>
+                    <p>$${p.precio}</p>
+                    <button onclick="agregarAlCarrito(${index}, event)">Agregar</button>
+                `;
+                
+                div.addEventListener('click', function(event) {
+                    if (!event.target.closest('button')) {
+                        mostrarDetalleProducto(index);
+                    }
+                });
+                contenedor.appendChild(div);
+            });
+        }
+
+        function mostrarModalCategorias() {
+            const categoriasContainer = document.getElementById("categorias-listado");
+            categoriasContainer.innerHTML = "";
+            
+            categorias.forEach((cat) => {
+                const div = document.createElement("div");
+                div.classList.add("categoria");
+                
+                let imagenHTML = `<div class='categoria-imagen'>`;
+                if (cat.imagen) {
+                    imagenHTML += `<img src="${cat.imagen}" alt="${cat.nombre}" onerror="this.style.display='none'; this.parentNode.innerHTML='${cat.nombre}';"></div>`;
+                } else {
+                    imagenHTML += `${cat.nombre}</div>`;
+                }
+                
+                div.innerHTML = `
+                    ${imagenHTML}
+                    <p><strong>${cat.nombre}</strong></p>
+                `;
+                
+                div.addEventListener('click', function() {
+                    irAPaginaCategoria(cat.nombre);
+                });
+                
+                categoriasContainer.appendChild(div);
+            });
+            
+            document.getElementById("modal-categorias").style.display = "block";
+        }
+
+        function cerrarModalCategorias() {
+            document.getElementById("modal-categorias").style.display = "none";
+        }
+
+        function irAPaginaCategoria(categoria) {
+            const nombreArchivo = categoria.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ".html";
+            window.location.href = nombreArchivo;
+        }
+
+
+        function mostrarDetalleProducto(id) {
+            const producto = productos[id];
+            const detalleContainer = document.getElementById("detalle-producto");
+            
+            let imagenHTML = `<div class="producto-imagen-grande">`;
+            if (producto.imagen) {
+                imagenHTML += `<img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.style.display='none'; this.parentNode.innerHTML='Imagen de ${producto.nombre}';"></div>`;
+            } else {
+                imagenHTML += `Imagen de ${producto.nombre}</div>`;
+            }
+            
+   
+            detalleContainer.innerHTML = `
+                ${imagenHTML}
+                <h2>Producto (${producto.nombre})</h2>
+                <div class="producto-precio">$${producto.precio}</div>
+                
+                <div class="botones-compra">
+                    <button onclick="comprarAhora(${id})">Comprar ahora</button>
+                    <button onclick="agregarAlCarrito(${id})">Agregar al carrito</button>
+                </div>
+
+                <div class="descripcion">
+                    <h3>Descripción</h3>
+                    <p><strong>Categoría:</strong> ${producto.categoria}</p>
+                    <p><strong>Stock disponible:</strong> ${producto.stock} unidades</p>
+                    <p>${producto.descripcion}</p>
+                </div>
+                
+                <div class="reseñas">
+                    <h3>Reseñas</h3>
+                    <p>Aquí aparecerían las reseñas de otros usuarios</p>
+                </div>
+            `;
+            document.getElementById("modal-producto").style.display = "block";
+        }
+    
+        function comprarAhora(id) {
+            alert("¡Compra realizada con éxito!");
+        
+        }
+
+        function cerrarModal() {
+            document.getElementById("modal-producto").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById("modal-producto");
+            const modalCategorias = document.getElementById("modal-categorias");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+            if (event.target == modalCategorias) {
+                modalCategorias.style.display = "none";
+            }
+        }
+
+        function agregarAlCarrito(id, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            const producto = productos[id];
+            carrito.push(producto);
+            localStorage.setItem("carrito", JSON.stringify(carrito));
+            alert(`¡${producto.nombre} agregado al carrito!`);
+        }
+
+        function verCarrito() {
+            window.location.href = "carrito.html";
+        }
+
+        function buscarProducto() {
+            const filtro = document.getElementById("search").value.toLowerCase();
+            const contenedor = document.getElementById("productos");
+            contenedor.innerHTML = "";
+            
+            const resultados = productos.filter(p => 
+                p.nombre.toLowerCase().includes(filtro) || 
+                p.descripcion.toLowerCase().includes(filtro) ||
+                p.categoria.toLowerCase().includes(filtro)
+            );
+            
+            resultados.forEach((p) => {
+                const productoIndex = productos.indexOf(p);
+                const div = document.createElement("div");
+                div.classList.add("producto");
+                
+                let imagenHTML = `<div class='imagen-placeholder'>`;
+                if (p.imagen) {
+                    imagenHTML += `<img src="${p.imagen}" alt="${p.nombre}" onerror="this.style.display='none'; this.parentNode.innerHTML='${p.nombre}';"></div>`;
+                } else {
+                    imagenHTML += `${p.nombre}</div>`;
+                }
+                
+                div.innerHTML = `
+                    ${imagenHTML}
+                    <p><strong>${p.nombre}</strong></p>
+                    <p>$${p.precio}</p>
+                    <button onclick="agregarAlCarrito(${productoIndex}, event)">Agregar</button>
+                `;
+                
+                div.addEventListener('click', function(event) {
+                    if (!event.target.closest('button')) {
+                        mostrarDetalleProducto(productoIndex);
+                    }
+                });
+                contenedor.appendChild(div);
+            });
+        }
+
+        function toggleMenu(event) {
+            event.stopPropagation(); 
+            document.getElementById("menu").classList.toggle("active");
+        }
+
+        function closeMenu(event) {
+            const menu = document.getElementById("menu");
+            if (!menu.contains(event.target) && !event.target.closest(".menu-button")) {
+                menu.classList.remove("active");
+            }
+        }
+
+        mostrarProductos();
+    </script>
+    
+    <div class="info-container">
+        <p>Nutts market es una pagina dedicada a apoyarte en tus compras y tramites</p>
+        <p>para mas informacion o soporte escribenos en nutts_market@gmail.com</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rastreo de Pedido</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #D3FFC5;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #D3FFC5;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .container {
+            background-color: #FFE7E6;
+            padding: 20px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            margin-top: -10px;
+            text-align: center;
+        }
+
+        .productos {
+            margin-top: 20px;
+        }
+
+        .productos h3 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #9DE89A;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .mapa {
+            margin-top: 20px;
+        }
+
+        .mapa-imagen {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <button class="back-button" onclick="window.location.href='index.html'">← Volver</button>
+        <h1 class="logo">NUTT PLACE</h1>
+        <h1></h1>
+    </header>
+
+    <main class="container">
+        <h2>Rastreo de Pedido</h2>
+        <section class="productos">
+            <h3>Productos en tu pedido:</h3>
+            <ul id="lista-productos"></ul>
+        </section>
+
+        <section class="mapa">
+            <h3>Ubicación</h3>
+            <img src="mapa.png" alt="Mapa de rastreo" class="mapa-imagen">
+        </section>
+    </main>
+
+    <script>
+        function volver() {
+            window.history.back();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const productosCarrito = JSON.parse(localStorage.getItem("carrito")) || [];
+            const listaProductos = document.getElementById("lista-productos");
+
+            productosCarrito.forEach(producto => {
+                const li = document.createElement("li");
+                li.textContent = `${producto.nombre} - $${producto.precio}`;
+                listaProductos.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>

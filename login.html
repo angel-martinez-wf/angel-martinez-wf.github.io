@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button class="back-button" onclick="window.location.href='index.html'">← Volver</button>
+
+  <div class="login-container">
+    <h1 id="form-title">Iniciar Sesión</h1>
+    <p class="subheading" id="subheading-text">¡Inicia sesión con tu cuenta!</p>
+    <div class="login-form" id="form-contenedor">
+      <input type="text" id="usuario" placeholder="Correo">
+      <input type="password" id="password" placeholder="Contraseña">
+      <label><input type="checkbox" id="recordar"> Recordar contraseña</label>
+      <button class="toggle-button" onclick="recuperarContrasena()">¿Olvidé mi contraseña?</button>
+      <button class="main-button" onclick="procesarFormulario()">Iniciar Sesión</button>
+      <button class="main-button" onclick="cambiarFormulario()">Registrarse</button>
+    </div>
+  </div>
+
+  <script>
+    let modoRegistro = false;
+
+    function cambiarFormulario() {
+      modoRegistro = !modoRegistro;
+      document.getElementById("form-title").innerText = modoRegistro ? "Registrarse" : "Iniciar Sesión";
+      document.getElementById("subheading-text").innerText = modoRegistro ? "¡Crea una cuenta nueva!" : "¡Inicia sesión con tu cuenta!";
+
+      document.getElementById("form-contenedor").innerHTML = modoRegistro ? `
+        <input type="email" id="email" placeholder="Correo">
+        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="password" id="password" placeholder="Contraseña">
+        <input type="password" id="confirm-password" placeholder="Confirmar Contraseña">
+        <button class="main-button" onclick="procesarFormulario()">Registrarse</button>
+        <button class="main-button" onclick="cambiarFormulario()">Iniciar Sesión</button>
+      ` : `
+        <input type="text" id="usuario" placeholder="Correo">
+        <input type="password" id="password" placeholder="Contraseña">
+        <label><input type="checkbox" id="recordar"> Recordar contraseña</label>
+        <button class="toggle-button" onclick="recuperarContrasena()">¿Olvidé mi contraseña?</button>
+        <button class="main-button" onclick="procesarFormulario()">Iniciar Sesión</button>
+        <button class="main-button" onclick="cambiarFormulario()">Registrarse</button>
+      `;
+    }
+
+    function recuperarContrasena() {
+      window.location.href = "recuperar.html";
+    }
+
+    function procesarFormulario() {
+      if (modoRegistro) {
+        alert("Registrando usuario...");
+        modoRegistro = false;
+        document.getElementById("form-title").innerText = "Iniciar Sesión";
+        document.getElementById("subheading-text").innerText = "¡Inicia sesión con tu cuenta!";
+        document.getElementById("form-contenedor").innerHTML = `
+          <input type="text" id="usuario" placeholder="Correo">
+          <input type="password" id="password" placeholder="Contraseña">
+          <label><input type="checkbox" id="recordar"> Recordar contraseña</label>
+          <button class="toggle-button" onclick="recuperarContrasena()">¿Olvidé mi contraseña?</button>
+          <button class="main-button" onclick="procesarFormulario()">Iniciar Sesión</button>
+          <button class="main-button" onclick="cambiarFormulario()">Registrarse</button>
+        `;
+      } else {
+        alert("Iniciando sesión...");
+        window.location.href = "index.html";
+      }
+    }
+  </script>
+</body>
+</html>
